@@ -188,3 +188,46 @@ bool verificacionValidez(unsigned char* pista, unsigned char* descomprimido, int
     return false;
 }
 
+unsigned char* fuerzaBruta(unsigned char* msj, int tamanoArchivo, unsigned char* pista) {
+    int tamanoDescomprimido;
+
+    for (int n = 1; n <= 7; n++) {
+        for (int k = 0; k <= 255; k++) {
+            unsigned char key = (unsigned char)k;
+
+            unsigned char* msjDesencriptado = desencriptador(n, key, msj, tamanoArchivo);
+
+            int metodo = verificacionDescompresion(msjDesencriptado, tamanoArchivo);
+
+            unsigned char* resultadoMsj = nullptr;
+
+            if (metodo == 1) {
+
+                resultadoMsj = descompresorLZ78(msjDesencriptado, tamanoArchivo, &tamanoDescomprimido);
+
+            } else if (metodo == 2) {
+
+                resultadoMsj = descompresorRLE(msjDesencriptado, tamanoArchivo, &tamanoDescomprimido);
+            }
+
+            if (resultadoMsj != nullptr){
+
+                bool encontrado = verificacionValidez(pista,resultadoMsj,tamanoDescomprimido);
+
+                if (encontrado) {
+                    return resultadoMsj;
+                }
+
+                delete[] resultadoMsj;
+
+            }
+
+        }
+    }
+}
+
+int main(){
+
+    return 0;
+}
+
