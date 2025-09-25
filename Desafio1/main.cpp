@@ -21,7 +21,9 @@ unsigned char* lectorArchivo(const char* nombreArchivo, int& tamanoArchivo) {
     return buffer;
 }
 
-unsigned char* descomprimidorRLE(unsigned char* msj,int tamanoMsj){
+unsigned char* descompresorRLE(unsigned char* msj,int tamanoMsj, int* tamanoDescomprimido){
+
+    int tamanoFinal=0;
 
     unsigned int numero,contador = 0, tamanoTotal = 0;
     char caracter;
@@ -43,19 +45,24 @@ unsigned char* descomprimidorRLE(unsigned char* msj,int tamanoMsj){
 
             resultadoMsj[contador] = caracter;
             contador++;
+            tamanoFinal++;
 
         }
     }
+
+    *tamanoDescomprimido=tamanoFinal;
 
     resultadoMsj[contador] = '\0';
     return resultadoMsj;
 }
 
-unsigned char* descompresorLZ78(unsigned char msj[],int tamanoArchivo){
+unsigned char* descompresorLZ78(unsigned char* msj,int tamanoArchivo, int* tamanoDescomprimido){
 
     int cant_pares=tamanoArchivo/3;
     int *tamanos= new int[cant_pares];
     int longitud=0, total =0;
+
+    int tamanoFinal=0;
 
     int j=0, i=0;
     while (j<tamanoArchivo){
@@ -93,28 +100,35 @@ unsigned char* descompresorLZ78(unsigned char msj[],int tamanoArchivo){
             posiciones[i]=entradas;
             entradas++;
             i++;
+            tamanoFinal++;
         }
         else{
             int entrada_inicial=entradas;
             for (int c=0; c<tamanos[index-1];c++){
                 descomprimido[entradas]=descomprimido[posiciones[index-1]+c];
                 entradas++;
+                tamanoFinal++;
             }
             descomprimido[entradas]=caracter_actual;
             entradas++;
             posiciones[i]=entrada_inicial;
             i++;
+            tamanoFinal++;
         }
     }
 
     delete[] tamanos;
     delete[] posiciones;
 
+    *tamanoDescomprimido=tamanoFinal;
+
+    descomprimido[tamanoFinal]='\0';
+
     return descomprimido;
 }
 
 
-unsigned char* desencriptador(int n,unsigned char key,unsigned char msj[],int tamanoArchivo){
+unsigned char* desencriptador(int n,unsigned char key,unsigned char* msj,int tamanoArchivo){
 
     unsigned char *desencriptado= new unsigned char[tamanoArchivo];
 
@@ -125,5 +139,52 @@ unsigned char* desencriptador(int n,unsigned char key,unsigned char msj[],int ta
     }
 
     return desencriptado;
+}
+
+int verificacionDescompresion(unsigned char* desencriptado, int tamanoArchivo) {
+
+    int metodoDescomp=0;
+
+    for (int i=3; i<tamanoArchivo; i+=3) {
+
+        if (!((desencriptado[i] >= 'A' && desencriptado[i] <= 'Z')||(desencriptado[i] >= 'a' && desencriptado[i] <= 'z')||(desencriptado[i] >= '0' && desencriptado[i] <= '9'))) {
+            return metodoDescomp; //Se descarta la combinacion
+        }
+    }
+
+    if (desencriptado[0]==0){
+        metodoDescomp=1; //Se usara LZ78
+        return metodoDescomp;
+    }
+
+    else{
+        metodoDescomp=2; //Se usara RLE
+        return metodoDescomp;
+    }
+
+}
+
+bool verificacionValidez(unsigned char* pista, unsigned char* descomprimido, int tamanoDescomprimido){
+
+    int valido=0;
+    int tamanoPista=0;
+
+    for (int i=0; pista[i]!='\0'; i++){
+        tamanoPista++;
+    }
+
+    for (int i=0; i<tamanoDescomprimido; i++){
+        int j=0;
+        while (descomprimido[i+j]!='\0' && pista[j]!='\0' && descomprimido[i+j]==pista[j]){
+            j++;
+        }
+
+        if (j==tamanoPista){
+            return true;
+        }
+
+    }
+
+    return false;
 }
 
