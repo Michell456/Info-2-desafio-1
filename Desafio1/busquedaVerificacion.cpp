@@ -42,9 +42,7 @@ unsigned char* fuerzaBruta(unsigned char* msj, int tamanoArchivo, unsigned char*
                 }
 
                 delete[] resultadoMsj;
-
             }
-
         }
     }
 }
@@ -71,10 +69,7 @@ int verificacionDescompresion(unsigned char* desencriptado, int tamanoArchivo) {
         metodoDescomp=2; //Se usara RLE
         return metodoDescomp;
     }
-
 }
-
-
 
 bool verificacionValidez(unsigned char* pista, unsigned char* descomprimido, int tamanoDescomprimido){
 

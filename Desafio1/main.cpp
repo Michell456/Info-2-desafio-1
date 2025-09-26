@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 
+
 using namespace std;
 
 unsigned char* descompresorRLE(unsigned char* msj,int tamanoMsj, int* tamanoDescomprimido);
@@ -10,7 +11,7 @@ unsigned char* fuerzaBruta(unsigned char* msj, int tamanoArchivo, unsigned char*
 int verificacionDescompresion(unsigned char* desencriptado, int tamanoArchivo);
 bool verificacionValidez(unsigned char* pista, unsigned char* descomprimido, int tamanoDescomprimido);
 unsigned char* lectorArchivo(const char* nombreArchivo, int& tamanoArchivo);
-
+void guardarArchivo(const char* nombreArchivoResultados,unsigned char* mensaje, int tamanoDescomprimido, int* metodo,int n, int k,int a);
 
 int main(){
 

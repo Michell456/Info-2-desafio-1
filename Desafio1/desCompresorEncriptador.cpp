@@ -9,7 +9,7 @@ unsigned char* descompresorRLE(unsigned char* msj,int tamanoMsj, int* tamanoDesc
 
     unsigned int numero,contador = 0, tamanoTotal = 0;
     char caracter;
-    for (int i=0;i<tamanoMsj;i += 2){
+    for (int i=0;i<tamanoMsj;i += 3){
 
         tamanoTotal += msj[i];
 
@@ -18,10 +18,10 @@ unsigned char* descompresorRLE(unsigned char* msj,int tamanoMsj, int* tamanoDesc
     tamanoTotal ++;
     unsigned char* resultadoMsj = new unsigned char[tamanoTotal];
 
-    for (int i = 0;i<tamanoMsj;i += 2){
+    for (int i = 0;i<tamanoMsj;i += 3){
 
-        numero = msj[i];
-        caracter = msj[i+1];
+        numero = msj[i+1];
+        caracter = msj[i+2];
 
         for (int j = 0;j<numero;j++){
 
