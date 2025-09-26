@@ -15,19 +15,20 @@ unsigned char* lectorArchivo(const char* nombreArchivo, int& tamanoArchivo);
 int main(){
 
     int cantArchivos,tamanoArchivo=0,tamanoPista=0,metodo,n;
-    unsigned char nombreArchivo[20],k;
+    char nombreArchivo[20];
+    unsigned char k;
 
     cout << "Cuantos archivos deseas leer?: ";
     cin >> cantArchivos;
 
     for (int a = 1; a <= cantArchivos; a++) {
         sprintf(nombreArchivo, "Encriptado%d.txt", a);
-        unsigned char* msj = leectorArchivo(nombreArchivo, tamanoArchivo);
+        unsigned char* msj = lectorArchivo(nombreArchivo, tamanoArchivo);
 
         sprintf(nombreArchivo,"pista%d.txt",a);
-        unsigned char* pista = leectorArchivo(nombreArchivo, tamanoPista);
+        unsigned char* pista = lectorArchivo(nombreArchivo, tamanoPista);
 
-        unsigned char* resultadoMsj = fuerzaBruta(msj,tamanoArchivo,pista,metodo,n,k);
+        unsigned char* resultadoMsj = fuerzaBruta(msj,tamanoArchivo,pista,&metodo,&n,&k);
     }
 
     return 0;

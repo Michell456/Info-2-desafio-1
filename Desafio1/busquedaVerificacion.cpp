@@ -2,6 +2,12 @@
 
 using namespace std;
 
+unsigned char* descompresorRLE(unsigned char* msj,int tamanoMsj, int* tamanoDescomprimido);
+unsigned char* descompresorLZ78(unsigned char* msj,int tamanoArchivo, int* tamanoDescomprimido);
+unsigned char* desencriptador(int n,unsigned char key,unsigned char* msj,int tamanoArchivo);
+int verificacionDescompresion(unsigned char* desencriptado, int tamanoArchivo);
+bool verificacionValidez(unsigned char* pista, unsigned char* descomprimido, int tamanoDescomprimido);
+
 
 unsigned char* fuerzaBruta(unsigned char* msj, int tamanoArchivo, unsigned char* pista, int* metodo, int* n, unsigned char* k) {
     int tamanoDescomprimido;
@@ -12,15 +18,15 @@ unsigned char* fuerzaBruta(unsigned char* msj, int tamanoArchivo, unsigned char*
 
             unsigned char* msjDesencriptado = desencriptador(nn, key, msj, tamanoArchivo);
 
-            metodo = verificacionDescompresion(msjDesencriptado, tamanoArchivo);
+            *metodo = verificacionDescompresion(msjDesencriptado, tamanoArchivo);
 
             unsigned char* resultadoMsj = nullptr;
 
-            if (metodo == 1) {
+            if (*metodo == 1) {
 
                 resultadoMsj = descompresorLZ78(msjDesencriptado, tamanoArchivo, &tamanoDescomprimido);
 
-            } else if (metodo == 2) {
+            } else if (*metodo == 2) {
 
                 resultadoMsj = descompresorRLE(msjDesencriptado, tamanoArchivo, &tamanoDescomprimido);
             }
