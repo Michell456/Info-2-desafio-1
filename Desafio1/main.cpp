@@ -11,7 +11,7 @@ unsigned char* fuerzaBruta(unsigned char* msj, int tamanoArchivo, unsigned char*
 int verificacionDescompresion(unsigned char* desencriptado, int tamanoArchivo);
 bool verificacionValidez(unsigned char* pista, unsigned char* descomprimido, int tamanoDescomprimido);
 unsigned char* lectorArchivo(const char* nombreArchivo, int& tamanoArchivo);
-void guardarArchivo(const char* nombreArchivoResultados,unsigned char* mensaje, int tamanoDescomprimido, int* metodo,int n, int k,int a);
+void guardarArchivo(const char* nombreArchivoResultados,unsigned char* mensaje, int tamanoDescomprimido, int metodo,int n, int k,int a);
 
 int main(){
 
@@ -29,7 +29,30 @@ int main(){
         sprintf(nombreArchivo,"pista%d.txt",a);
         unsigned char* pista = lectorArchivo(nombreArchivo, tamanoPista);
 
-        unsigned char* resultadoMsj = fuerzaBruta(msj,tamanoArchivo,pista,&metodo,&n,&k);
+        unsigned char* resultadoMsj = nullptr;
+        if (pista == nullptr || msj == nullptr){
+
+            tamanoArchivo = 0;
+            metodo = -1;
+            n = -1;
+            k = 0;
+
+        }
+        else{
+
+
+            resultadoMsj = fuerzaBruta(msj,tamanoArchivo,pista,&metodo,&n,&k);
+
+            if (resultadoMsj == nullptr){
+
+                tamanoArchivo = 0;
+                metodo = -1;
+                n = -1;
+                k = 0;
+            }
+        }
+        guardarArchivo("resultado.txt",resultadoMsj,tamanoArchivo,metodo,n,k,a);
+
     }
 
     return 0;

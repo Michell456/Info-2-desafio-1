@@ -29,22 +29,26 @@ unsigned char* fuerzaBruta(unsigned char* msj, int tamanoArchivo, unsigned char*
             } else if (*metodo == 2) {
 
                 resultadoMsj = descompresorRLE(msjDesencriptado, tamanoArchivo, &tamanoDescomprimido);
+
             }
 
             if (resultadoMsj != nullptr){
 
                 bool encontrado = verificacionValidez(pista,resultadoMsj,tamanoDescomprimido);
 
-                if (encontrado) {
+                if (encontrado==true) {
                     *n = nn;
                     *k = key;
                     return resultadoMsj;
                 }
 
                 delete[] resultadoMsj;
+
             }
         }
     }
+
+    return nullptr;
 }
 
 

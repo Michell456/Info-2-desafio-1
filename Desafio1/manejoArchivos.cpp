@@ -7,7 +7,6 @@ using namespace std;
 unsigned char* lectorArchivo(const char* nombreArchivo, int& tamanoArchivo) {
     ifstream file(nombreArchivo, std::ios::binary | std::ios::ate); // abre al final
     if (!file) {
-        cerr << "No se pudo abrir el archivo\n";
         tamanoArchivo = 0;
         return nullptr;
     }
@@ -22,11 +21,10 @@ unsigned char* lectorArchivo(const char* nombreArchivo, int& tamanoArchivo) {
     return buffer;
 }
 
-void guardarArchivo(const char* nombreArchivoResultados,unsigned char* mensaje, int tamanoDescomprimido, int* metodo,int n, int k,int a){
+void guardarArchivo(const char* nombreArchivoResultados,unsigned char* mensaje, int tamanoDescomprimido, int metodo,int n, int k,int a){
 
     std::ofstream archivo(nombreArchivoResultados, std::ios::out | std::ios::app);
     if (!archivo) {
-        std::cerr << "No se pudo abrir el archivo\n";
         return;
     }
 
@@ -36,8 +34,17 @@ void guardarArchivo(const char* nombreArchivoResultados,unsigned char* mensaje, 
     }
     archivo <<"\n";
 
-        //datos (rotacion, met de encriptacion, n° de archivo)
-        archivo << "** Encriptado" << a << " **\n";
+    //datos (rotacion, met de encriptacion, n° de archivo)
+    archivo << "** Encriptado" << a << " **\n";
+    if (n == -1){
+        archivo << "Error al abrir el archivo/descomprimir" << "\n";
+    }
+    if (metodo == 1){
+        archivo << "Compresión: LZ78" << "\n";
+    }
+    else if (metodo == 2){
+        archivo << "Compresión: RLE"<< "\n";
+    }
     archivo << "Compresión: " << metodo << "\n";
     archivo << "Rotación: " << n << "\n";
 
@@ -48,3 +55,5 @@ void guardarArchivo(const char* nombreArchivoResultados,unsigned char* mensaje, 
 
     archivo.close();
 }
+
+
