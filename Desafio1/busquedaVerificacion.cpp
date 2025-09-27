@@ -9,8 +9,7 @@ int verificacionDescompresion(unsigned char* desencriptado, int tamanoArchivo);
 bool verificacionValidez(unsigned char* pista, unsigned char* descomprimido, int tamanoDescomprimido);
 
 
-unsigned char* fuerzaBruta(unsigned char* msj, int tamanoArchivo, unsigned char* pista, int* metodo, int* n, unsigned char* k) {
-    int tamanoDescomprimido;
+unsigned char* fuerzaBruta(unsigned char* msj, int tamanoArchivo, unsigned char* pista, int* metodo, int* n, unsigned char* k, int* tamanoDescomprimido) {
 
     for (int nn = 1; nn <= 7; nn++) {
         for (int kk = 0; kk <= 255; kk++) {
@@ -24,17 +23,19 @@ unsigned char* fuerzaBruta(unsigned char* msj, int tamanoArchivo, unsigned char*
 
             if (*metodo == 1) {
 
-                resultadoMsj = descompresorLZ78(msjDesencriptado, tamanoArchivo, &tamanoDescomprimido);
+                resultadoMsj = descompresorLZ78(msjDesencriptado, tamanoArchivo, tamanoDescomprimido);
 
             } else if (*metodo == 2) {
 
-                resultadoMsj = descompresorRLE(msjDesencriptado, tamanoArchivo, &tamanoDescomprimido);
+                resultadoMsj = descompresorRLE(msjDesencriptado, tamanoArchivo, tamanoDescomprimido);
 
             }
 
+            delete[] msjDesencriptado;
+
             if (resultadoMsj != nullptr){
 
-                bool encontrado = verificacionValidez(pista,resultadoMsj,tamanoDescomprimido);
+                bool encontrado = verificacionValidez(pista,resultadoMsj,*tamanoDescomprimido);
 
                 if (encontrado==true) {
                     *n = nn;
@@ -57,14 +58,14 @@ int verificacionDescompresion(unsigned char* desencriptado, int tamanoArchivo) {
 
     int metodoDescomp=0;
 
-    for (int i=3; i<tamanoArchivo; i+=3) {
-
+    for (int i=2; i<tamanoArchivo; i+=3) {
         if (!((desencriptado[i] >= 'A' && desencriptado[i] <= 'Z')||(desencriptado[i] >= 'a' && desencriptado[i] <= 'z')||(desencriptado[i] >= '0' && desencriptado[i] <= '9'))) {
             return metodoDescomp; //Se descarta la combinacion
         }
     }
 
-    if (desencriptado[0]==0){
+    int index = ( (int)desencriptado[0] << 8 ) | (int)desencriptado[1];
+    if (index==0){
         metodoDescomp=1; //Se usara LZ78
         return metodoDescomp;
     }

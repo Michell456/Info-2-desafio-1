@@ -11,15 +11,35 @@ unsigned char* lectorArchivo(const char* nombreArchivo, int& tamanoArchivo) {
         return nullptr;
     }
 
-    tamanoArchivo = file.tellg();                  // obtengo el tamaño del archivo
-    unsigned char* buffer = new unsigned char[tamanoArchivo]; // creo el arreglo dinámico
+    std::streamsize size = file.tellg();                  // obtengo el tamaño del archivo
+    if (size <= 0) {
+        tamanoArchivo = 0;
+        file.close();
+        return nullptr;
+    }
+
+    // reservar +1 para terminar con '\0' (útil para pistas de texto)
+    unsigned char* buffer = new unsigned char[size + 1];
 
     file.seekg(0, std::ios::beg);                  // vuelvo al inicio del archivo
-    file.read(reinterpret_cast<char*>(buffer), tamanoArchivo);
-
+    file.read(reinterpret_cast<char*>(buffer), size);
     file.close();
+
+    // Ajustar tamanoArchivo (por referencia)
+    tamanoArchivo = static_cast<int>(size);
+
+    // Si el archivo es de texto puede terminar con '\n' o '\r\n'.
+    // Eliminamos dichos caracteres del final (esto no hace daño si es binario).
+    while (tamanoArchivo > 0 && (buffer[tamanoArchivo - 1] == '\n' || buffer[tamanoArchivo - 1] == '\r')) {
+        tamanoArchivo--;
+    }
+
+    // poner terminador nulo (útil para usar como cadena)
+    buffer[tamanoArchivo] = '\0';
+
     return buffer;
 }
+
 
 void guardarArchivo(const char* nombreArchivoResultados,unsigned char* mensaje, int tamanoDescomprimido, int metodo,int n, int k,int a){
 
@@ -47,6 +67,7 @@ void guardarArchivo(const char* nombreArchivoResultados,unsigned char* mensaje, 
     }
     archivo << "Compresión: " << metodo << "\n";
     archivo << "Rotación: " << n << "\n";
+
 
     // key con formato 0xNN
     archivo << "Key = 0x"

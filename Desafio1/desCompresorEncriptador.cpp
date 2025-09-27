@@ -11,12 +11,12 @@ unsigned char* descompresorRLE(unsigned char* msj,int tamanoMsj, int* tamanoDesc
     char caracter;
     for (int i=0;i<tamanoMsj;i += 3){
 
-        tamanoTotal += msj[i];
+        tamanoTotal += msj[i+1];
 
     }
 
     tamanoTotal ++;
-    unsigned char* resultadoMsj = new unsigned char[tamanoTotal];
+    unsigned char* resultadoMsj = new unsigned char[tamanoTotal+1];
 
     for (int i = 0;i<tamanoMsj;i += 3){
 
@@ -34,7 +34,7 @@ unsigned char* descompresorRLE(unsigned char* msj,int tamanoMsj, int* tamanoDesc
 
     *tamanoDescomprimido=tamanoFinal;
 
-    resultadoMsj[contador] = '\0';
+    resultadoMsj[tamanoFinal] = '\0';
     return resultadoMsj;
 }
 
@@ -67,7 +67,7 @@ unsigned char* descompresorLZ78(unsigned char* msj,int tamanoArchivo, int* taman
         i++;
     }
 
-    unsigned char *descomprimido= new unsigned char[total];
+    unsigned char *descomprimido= new unsigned char[total+1];
     int *posiciones= new int[cant_pares];
 
     j=0, i=0;
