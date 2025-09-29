@@ -16,7 +16,6 @@ unsigned char* fuerzaBruta(unsigned char* msj, int tamanoArchivo, unsigned char*
             unsigned char key = (unsigned char)kk;
 
             unsigned char* msjDesencriptado = desencriptador(nn, key, msj, tamanoArchivo);
-
             *metodo = verificacionDescompresion(msjDesencriptado, tamanoArchivo);
 
             unsigned char* resultadoMsj = nullptr;

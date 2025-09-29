@@ -6,7 +6,6 @@ using namespace std;
 unsigned char* descompresorRLE(unsigned char* msj,int tamanoMsj, int* tamanoDescomprimido){
 
     int tamanoFinal=0;
-
     unsigned int numero,contador = 0, tamanoTotal = 0;
     char caracter;
     for (int i=0;i<tamanoMsj;i += 3){
@@ -16,7 +15,7 @@ unsigned char* descompresorRLE(unsigned char* msj,int tamanoMsj, int* tamanoDesc
     }
 
     tamanoTotal ++;
-    unsigned char* resultadoMsj = new unsigned char[tamanoTotal+1];
+    unsigned char* resultadoMsj = new unsigned char[tamanoTotal];
 
     for (int i = 0;i<tamanoMsj;i += 3){
 

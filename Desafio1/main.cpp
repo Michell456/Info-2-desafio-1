@@ -4,12 +4,7 @@
 
 using namespace std;
 
-unsigned char* descompresorRLE(unsigned char* msj,int tamanoMsj, int* tamanoDescomprimido);
-unsigned char* descompresorLZ78(unsigned char* msj,int tamanoArchivo, int* tamanoDescomprimido);
-unsigned char* desencriptador(int n,unsigned char key,unsigned char* msj,int tamanoArchivo);
 unsigned char* fuerzaBruta(unsigned char* msj, int tamanoArchivo, unsigned char* pista, int* metodo, int* n, unsigned char* k, int* tamanoDescomprimido);
-int verificacionDescompresion(unsigned char* desencriptado, int tamanoArchivo);
-bool verificacionValidez(unsigned char* pista, unsigned char* descomprimido, int tamanoDescomprimido);
 unsigned char* lectorArchivo(const char* nombreArchivo, int& tamanoArchivo);
 void guardarArchivo(const char* nombreArchivoResultados,unsigned char* mensaje, int tamanoDescomprimido, int metodo,int n, int k,int a);
 
@@ -19,8 +14,39 @@ int main(){
     char nombreArchivo[20];
     unsigned char k;
 
-    cout << "Cuantos archivos deseas leer?: ";
-    cin >> cantArchivos;
+    while (true) {
+        cantArchivos = 0;
+        bool verif = true;
+        char entrada[3];
+
+        cout << "Cuantos archivos desea descencriptar?: ";
+        cin >> entrada;
+
+        int i = 0;
+        while (entrada[i] != '\0') {
+            if (entrada[i] < '0' || entrada[i] > '9') {
+                cout << "Entrada invalida. Solo se permiten numeros." << endl;
+                verif = false;
+                break;
+            }
+            i++;
+        }
+
+        if (verif) {
+            i = 0;
+            while (entrada[i] != '\0') {
+                cantArchivos = cantArchivos * 10 + (entrada[i] - '0');
+                i++;
+            }
+
+            if (cantArchivos == 0) {
+                cout << "Debe ingresar un numero mayor que cero." << endl;
+                verif = false;
+            }
+        }
+
+        if (verif) break; // salir si todo está correcto
+    }
 
     for (int a = 1; a <= cantArchivos; a++) {
 
@@ -62,6 +88,8 @@ int main(){
         delete[] resultadoMsj;
         delete[] msj;
         delete[] pista;
+        n = 0;
+        k = 1;
 
     }
 
