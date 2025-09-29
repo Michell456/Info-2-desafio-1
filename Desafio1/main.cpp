@@ -63,16 +63,7 @@ int main(){
         unsigned char* pista = lectorArchivo(nombreArchivo, tamanoPista);
 
         unsigned char* resultadoMsj = nullptr;
-        if (pista == nullptr || msj == nullptr){
-
-            tamanoDescomprimido = 0;
-            metodo = -1;
-            n = -1;
-            k = 0;
-
-        }
-        else{
-
+        if (pista != nullptr || msj != nullptr){
 
             resultadoMsj = fuerzaBruta(msj,tamanoArchivo,pista,&metodo,&n,&k,&tamanoDescomprimido);
 
@@ -83,7 +74,9 @@ int main(){
                 n = -1;
                 k = 0;
             }
+
         }
+
         guardarArchivo("resultado.txt",resultadoMsj,tamanoDescomprimido,metodo,n,k,a);
         delete[] resultadoMsj;
         delete[] msj;
