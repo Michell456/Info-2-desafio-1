@@ -81,8 +81,6 @@ int main(){
         delete[] resultadoMsj;
         delete[] msj;
         delete[] pista;
-        n = 0;
-        k = 1;
 
     }
 
